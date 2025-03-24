@@ -1,10 +1,10 @@
 import Colors from '@/constants/Colors';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Button, FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "../redux/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 import { useState, useEffect } from 'react';
 import { getPlanetsFromApi, getPeopleFromApi } from '../services/swApi/swApi';
 import { Planeta, Persona } from '../types/types';
@@ -36,7 +36,7 @@ const ListScreen = () => {
             }
 
             setData(response.results);
-            setTotalPages(response.totalPages); // Manejo de paginación
+            setTotalPages(response.totalPages); 
         } catch (err) {
             setError("Hubo un error al obtener los datos.");
         } finally {

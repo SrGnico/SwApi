@@ -18,10 +18,9 @@ const PeopleDetailScreen = () => {
   const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
   const [planet, setPlanet] = useState<{ title: string; id: string }>();
   const [films, setFilms] = useState<{ title: string; id: string }[]>([]);
-  const [species, setSpecies] = useState<{ title: string}>();
+  const [species, setSpecies] = useState<{ title: string }>();
   const [vehicles, setVehicles] = useState<{ title: string }[]>();
   const [ships, setShips] = useState<{ title: string }[]>();
-
 
   useEffect(() => {
     const fetchPlanetData = async () => {
@@ -42,7 +41,7 @@ const PeopleDetailScreen = () => {
           personaData.vehiculos.map(async (url) => {
             const res = await fetch(url);
             const data = await res.json();
-            
+
             return { title: data.name };
           })
         );
@@ -52,23 +51,22 @@ const PeopleDetailScreen = () => {
           personaData.navesEstelares.map(async (url) => {
             const res = await fetch(url);
             const data = await res.json();
-            
+
             return { title: data.name };
           })
         );
         setShips(shipsData);
 
         const filmData = await Promise.all(
-            personaData.peliculas.map(async (url) => {
-              const res = await fetch(url);
-              const data = await res.json();
-              
-              const id = url.split("/").filter(Boolean).pop() || '';
-          
-              return { title: data.title, id };
-            })
-          );
-          setFilms(filmData);
+          personaData.peliculas.map(async (url) => {
+            const res = await fetch(url);
+            const data = await res.json();
+            const id = url.split("/").filter(Boolean).pop() || '';
+
+            return { title: data.title, id };
+          })
+        );
+        setFilms(filmData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -77,10 +75,9 @@ const PeopleDetailScreen = () => {
     fetchPlanetData();
   }, [id]);
 
-return (
-<ScrollView>
-    <SafeAreaView style={[styles.container,{backgroundColor: Colors[isDarkMode ? 'dark' : 'light'].background }]}>
-
+  return (
+    <ScrollView>
+      <SafeAreaView style={[styles.container, { backgroundColor: Colors[isDarkMode ? 'dark' : 'light'].background }]}>
         <DetailHeader title={`${persona?.nombre}`}></DetailHeader>
 
         <DetailItem title={'Altura:'} info={`${persona?.altura}`}></DetailItem>
@@ -92,31 +89,29 @@ return (
         <DetailItem title={'Genero:'} info={`${persona?.genero}`}></DetailItem>
         <DetailItem title={'Masa:'} info={`${persona?.masa}`}></DetailItem>
 
-        <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
-            <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Planeta de nacimiento:</Text>
-            <Pressable 
-                    style={({ pressed }) => ({
-                        opacity: pressed ? 0.5 : 1,
-                    })}
-                    onPress={()=>{
-                    router.push({pathname:'/planetDetail', params:{ id: planet?.id}})
-                }}>
-              <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{planet?.title}</Text>
-            </Pressable>
+        <View style={[styles.item, { backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
+          <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Planeta de nacimiento:</Text>
+          <Pressable
+            style={({ pressed }) => ({
+              opacity: pressed ? 0.5 : 1,
+            })}
+            onPress={() => {
+              router.push({ pathname: '/planetDetail', params: { id: planet?.id } })
+            }}>
+            <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{planet?.title}</Text>
+          </Pressable>
         </View>
 
         <DetailNotClickableList title={'Naves Estelares:'} data={ships || []}></DetailNotClickableList>
         <DetailNotClickableList title={'Vehiculos:'} data={vehicles || []}></DetailNotClickableList>
 
         <DetailClickableList link={'/filmDetail'} title={'Peliculas:'} data={films || []}></DetailClickableList>
-
-    </SafeAreaView>
-</ScrollView>
-);
+      </SafeAreaView>
+    </ScrollView>
+  );
 };
 
 export default PeopleDetailScreen;
-
 
 const styles = StyleSheet.create({
   container: {
@@ -124,7 +119,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     overflow: 'visible'
   },
-  item:{
+  item: {
     marginHorizontal: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -133,8 +128,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderRadius: 10
   },
-  text:{
+  text: {
     fontSize: 16
   },
- 
 });

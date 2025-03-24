@@ -4,7 +4,7 @@ import React from 'react';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import galaxyVideoBg from '../data/videos/galaxy_video_bg.mp4';
 const swarWarsLogo = require('../data/images/Star_Wars_Logo.png');
-import Button from '@/components/Button'; // Ensure this import is correct
+import Button from '@/components/Button'; 
 import { View } from '@/components/Themed';
 import Colors from '@/constants/Colors';
 import { router } from 'expo-router';
@@ -21,10 +21,8 @@ const IndexScreen = () => {
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="black" />
 
-        {/* Video Player */}
         <VideoView style={styles.video} player={player} nativeControls={false}/>
 
-        {/* Screen */}
         <SafeAreaView style={styles.column}>
           <Image
             style={styles.image}

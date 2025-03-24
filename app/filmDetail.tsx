@@ -1,10 +1,8 @@
-import IconButton from '@/components/IconButton';
 import Colors from '@/constants/Colors';
 import { RootState } from '@/redux/store';
 import { getFilmFromApiById } from '@/services/swApi/swApi';
 import { FilmName, Pelicula } from '@/types/types';
-import { router, useLocalSearchParams } from 'expo-router';
-import * as Haptics from 'expo-haptics';
+import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, Dimensions, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -22,7 +20,6 @@ const FilmDetailScreen = () => {
   const width = Dimensions.get('window').width - 40;
   const [planets, setPlanets] = useState<{ title: string; id: string }[]>();
   const [people, setPeople] = useState<{ title: string; id: string }[]>();
-  const [films, setFilms] = useState<{ title: string; id: string }[]>([]);
   const [species, setSpecies] = useState<{ title: string}[]>();
   const [vehicles, setVehicles] = useState<{ title: string }[]>();
   const [ships, setShips] = useState<{ title: string }[]>();
