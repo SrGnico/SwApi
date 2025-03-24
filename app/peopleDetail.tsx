@@ -57,7 +57,7 @@ const PeopleDetailScreen = () => {
             return { title: data.name };
           })
         );
-        setVehicles(shipsData);
+        setShips(shipsData);
 
         const filmData = await Promise.all(
             personaData.peliculas.map(async (url) => {
@@ -136,7 +136,7 @@ return (
             style={styles.flatList}
             showsHorizontalScrollIndicator={false}
             horizontal={true}
-            data={vehicles}
+            data={ships}
             contentContainerStyle={{gap: 10}}
             renderItem={({ item }) => (
                 <Text key={item.title} style={[styles.flatListItem, { color: Colors[isDarkMode ? 'light' : 'dark'].text, backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background}]}>{item.title}</Text>
