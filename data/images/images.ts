@@ -1,4 +1,4 @@
-import { FilmName, PlanetName } from "@/app/api/swApi/types";
+import { FilmName, PlanetName } from "@/types/types";
 
 export const planetImages: Record<PlanetName, any> = {
   "Alderaan": require('./planets/Alderaan.png'),

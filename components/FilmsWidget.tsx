@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, Text, Image, Pressable } from 'react-native';
-import { getFilmsFromApi } from '../app/api/swApi/swApi';
-import { Pelicula, FilmName } from '@/app/api/swApi/types';
+import { getFilmsFromApi } from '../services/swApi/swApi';
+import { Pelicula, FilmName } from '@/types/types';
 import { filmImages } from "../data/images/images";
 import { useState, useEffect } from 'react';
 import { View } from './Themed';
@@ -40,7 +40,7 @@ const FilmsWidget = () => {
           <Pressable 
             style={({ pressed }) => ({
               opacity: pressed ? 0.5 : 1,
-              ...styles.item, backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background 
+              ...styles.item, backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background, shadowColor: Colors[isDarkMode ? 'light' : 'dark'].background
               })}
               onPress={()=>{
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
@@ -48,7 +48,7 @@ const FilmsWidget = () => {
               }}>
             <Image
               source={filmImages[item.titulo as FilmName]}
-              style={[styles.image, {backgroundColor: Colors[isDarkMode ? 'dark' : 'light'].background }]}
+              style={[styles.image, {borderColor: Colors[isDarkMode ? 'dark' : 'light'].background }]}
             />
             <Text style={[styles.tituloPelicula, {color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{item.titulo}</Text>
           </Pressable>
@@ -64,7 +64,6 @@ export default FilmsWidget;
 const styles = StyleSheet.create({
   container:{
     marginVertical: 10,
-    paddingHorizontal: 20,
   },
   row:{
     flexDirection: 'row',
@@ -73,6 +72,7 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   title:{
+    paddingHorizontal: 20,
     fontSize: 32,
     fontWeight: 'bold'
   },
@@ -82,16 +82,30 @@ const styles = StyleSheet.create({
   flatList: {
     paddingVertical: 10,
     height: '100%',
+    paddingHorizontal: 20
   },
   item:{
-    height: 500,
+    height: 265,
+    width: 140,
+    padding: 10,
+    borderRadius: 10,
     alignItems: 'center',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,     
+    elevation: 5, 
   },
   tituloPelicula:{
-    fontSize: 18,
-    fontWeight: 'bold'
+    marginVertical: 5,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   image:{
-
+    height: 200,
+    width: 120,
+    objectFit: 'cover',
+    borderWidth: 2,
+    borderRadius: 7,
   }
 });

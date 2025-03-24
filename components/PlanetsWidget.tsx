@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, Text, Image, Pressable } from 'react-native';
-import { getPlanetsFromApi } from '../app/api/swApi/swApi';
-import { Planeta, PlanetName } from '../app/api/swApi/types';
+import { getPlanetsFromApi } from '../services/swApi/swApi';
+import { Planeta, PlanetName } from '../types/types';
 import { planetImages } from '@/data/images/images';
 import { useState, useEffect } from 'react';
 import { View } from './Themed';
@@ -41,7 +41,7 @@ const PlanetsWidget = () => {
           <Pressable 
             style={({ pressed }) => ({
               opacity: pressed ? 0.5 : 1,
-              ...styles.item, backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background 
+              ...styles.item, backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background, shadowColor: Colors[isDarkMode ? 'light' : 'dark'].background
               })}
               onPress={()=>{
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
@@ -91,6 +91,10 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 10,
     alignItems: 'center',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,     
+    elevation: 5, 
   },
   image:{
     marginTop: -60,

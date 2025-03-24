@@ -6,8 +6,8 @@ import * as Haptics from 'expo-haptics';
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
 import { useState, useEffect } from 'react';
-import { getPlanetsFromApi, getPeopleFromApi } from './api/swApi/swApi';
-import { Planeta, Persona } from './api/swApi/types';
+import { getPlanetsFromApi, getPeopleFromApi } from '../services/swApi/swApi';
+import { Planeta, Persona } from '../types/types';
 import IconButton from '@/components/IconButton';
 
 const ListScreen = () => {

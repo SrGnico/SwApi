@@ -1,4 +1,4 @@
-import { Pelicula, Planeta, Persona } from '../swApi/types'
+import { Pelicula, Planeta, Persona } from '../../types/types'
 
 export const getFilmsFromApi = async (): Promise<Pelicula[]> => {
     try {
