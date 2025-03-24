@@ -64,7 +64,6 @@ export default PlanetsWidget;
 
 const styles = StyleSheet.create({
   container:{
-    marginVertical: 10,
     paddingHorizontal: 20,
   },
   row:{

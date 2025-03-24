@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, Text, Image, Pressable } from 'react-native';
-import { getFilmsFromApi } from '../services/swApi/swApi';
-import { Pelicula, FilmName } from '@/types/types';
-import { filmImages } from "../data/images/images";
+import { getPeopleFromApi } from '../services/swApi/swApi';
+import { Persona } from '../types/types';
+import { planetImages } from '@/data/images/images';
 import { useState, useEffect } from 'react';
 import { View } from './Themed';
 import Colors from '@/constants/Colors';
@@ -10,14 +10,14 @@ import { RootState } from "../redux/store";
 import { Link } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 
-const FilmsWidget = () => {
+const PeopleWidget = () => {
   const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
-  const [films, setFilms] = useState<Pelicula[]>([]);
+  const [people, setPeople] = useState<Persona[]>([]);
 
   useEffect(() => {
     const fetchPlanets = async () => {
-      const data = await getFilmsFromApi();
-      setFilms(data);
+      const data = await getPeopleFromApi();
+      setPeople(data.results);
     };
 
     fetchPlanets();
@@ -27,7 +27,8 @@ const FilmsWidget = () => {
     <View style={[styles.container, {backgroundColor: Colors[isDarkMode ? 'dark' : 'light'].background }]}>
 
       <View style={[styles.row, {backgroundColor: Colors[isDarkMode ? 'dark' : 'light'].background }]}>
-        <Text style={[styles.title, {color: Colors[isDarkMode ? 'dark' : 'light'].text }]}>Peliculas</Text>
+        <Text style={[styles.title, {color: Colors[isDarkMode ? 'dark' : 'light'].text }]}>Personas</Text>
+        <Link href={'/list?category=Personas'} style={[styles.link, {color: Colors[isDarkMode ? 'dark' : 'light'].text }]}>Ver más</Link>
       </View>
 
       <FlatList 
@@ -35,7 +36,7 @@ const FilmsWidget = () => {
         showsHorizontalScrollIndicator={false}
         style={styles.flatList} 
         contentContainerStyle={{gap: 10}}
-        data={films} 
+        data={people} 
         renderItem={({ item }) => (
           <Pressable 
             style={({ pressed }) => ({
@@ -46,11 +47,11 @@ const FilmsWidget = () => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
                 //Todo: Take to detail page
               }}>
-            <Image
-              source={filmImages[item.titulo as FilmName]}
-              style={[styles.image, {borderColor: Colors[isDarkMode ? 'dark' : 'light'].background }]}
-            />
-            <Text style={[styles.tituloPelicula, {color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{item.titulo}</Text>
+            {/* <Image
+              source={planetImages[item.nombre as PlanetName] || require("../data/images/planets/default.png")}
+              style={[styles.image, {backgroundColor: Colors[isDarkMode ? 'dark' : 'light'].background }]}
+            /> */}
+            <Text style={[styles.nombrePersona, {color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{item.nombre}</Text>
           </Pressable>
         )}
       >
@@ -59,10 +60,11 @@ const FilmsWidget = () => {
   );
 };
 
-export default FilmsWidget;
+export default PeopleWidget;
 
 const styles = StyleSheet.create({
   container:{
+    paddingHorizontal: 20,
   },
   row:{
     flexDirection: 'row',
@@ -71,7 +73,6 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   title:{
-    paddingHorizontal: 20,
     fontSize: 32,
     fontWeight: 'bold'
   },
@@ -80,31 +81,24 @@ const styles = StyleSheet.create({
   },
   flatList: {
     paddingVertical: 10,
-    height: '100%',
-    paddingHorizontal: 20
+    height: 100,
+    overflow: 'visible'
   },
   item:{
-    height: 265,
-    width: 140,
-    padding: 10,
+    padding:10,
+    width: 120,
+    height: 80,
     borderRadius: 10,
     alignItems: 'center',
+    justifyContent: 'center',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 5,     
     elevation: 5, 
   },
-  tituloPelicula:{
-    marginVertical: 5,
+  nombrePersona:{
     fontSize: 16,
     fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  image:{
-    height: 200,
-    width: 120,
-    objectFit: 'cover',
-    borderWidth: 2,
-    borderRadius: 7,
+    textAlign: 'center'
   }
 });

@@ -17,9 +17,7 @@ const Header = () =>{
     const dispatch = useDispatch<AppDispatch>();
 
     return <View style={[styles.container, {backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].text }]}>
-        <IconButton onPress={()=>{
-            //Todo: Menu?
-        }} name="menu"></IconButton>
+        <View style={styles.empty}></View>
         <Image style={styles.logo} source={isDarkMode ? swarWarsLogoBlanco : swarWarsLogoNegro } />
         <Pressable
         onPress={()=>{
@@ -42,6 +40,9 @@ const styles = StyleSheet.create({
         height: 60,
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    empty:{
+        width: 35
     },
     logo:{
         height: 100,

@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '@/components/Header';
 import PlanetsWidget from '@/components/PlanetsWidget';
 import FilmsWidget from '@/components/FilmsWidget';
+import PeopleWidget from '@/components/PeopleWidget';
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import Colors from '@/constants/Colors';
@@ -19,6 +20,7 @@ const HomeScreen = () => {
     />
       <Header></Header>
       <PlanetsWidget></PlanetsWidget>
+      <PeopleWidget></PeopleWidget>
       <FilmsWidget></FilmsWidget>
     </SafeAreaView>
   );
