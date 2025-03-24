@@ -7,9 +7,12 @@ import { Planeta, PlanetName } from '@/types/types';
 import { router, useLocalSearchParams } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, Dimensions, ScrollView, FlatList, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
+import DetailItem from '@/components/DetailItem';
+import DetailClickableList from '@/components/DetailClickableList';
+import DetailHeader from '@/components/DetailHeader';
 
 const PlanetDetailScreen = () => {
     const { id } = useLocalSearchParams() as { id: string };
@@ -25,7 +28,6 @@ const PlanetDetailScreen = () => {
             const planetData = await getPlanetFromApiById(id);
             setPlanet(planetData);
     
-            // Fetch para residentes
             const residentsData = await Promise.all(
               planetData.residentes.map(async (url) => {
                 const res = await fetch(url);
@@ -59,100 +61,27 @@ const PlanetDetailScreen = () => {
   return (
     <ScrollView>
         <SafeAreaView style={[styles.container,{backgroundColor: Colors[isDarkMode ? 'dark' : 'light'].background }]}>
-            <View style={styles.header}>
-                <IconButton name={'chevron-back'} onPress={() => {
-                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
-                        router.back();
-                }}></IconButton>
-                <Text style={[styles.title, { color: Colors[isDarkMode ? 'dark' : 'light'].text }]}>{planet?.nombre}</Text>
-            </View>
+        
+            <DetailHeader title={`${planet?.nombre}`}></DetailHeader>
+
             <Image
                 source={planetImages[planet?.nombre as PlanetName] || require("../data/images/planets/default.png")}
                 style={[styles.image, { width: width, height: width}]}
             />
-            <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Diametro:</Text>
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{planet?.diametro}</Text>
-            </View>
-            <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
 
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Periodo de Rotacion:</Text>
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{planet?.periodoRotacion}</Text>
-            </View>
-            <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
+            <DetailItem title={'Diametro:'} info={`${planet?.diametro}`}></DetailItem>
+            <DetailItem title={'Periodo de Rotacion:'} info={`${planet?.periodoRotacion}`}></DetailItem>
+            <DetailItem title={'Periodo Orbital:'} info={`${planet?.periodoOrbital}`}></DetailItem>
+            <DetailItem title={'Gravedad:'} info={`${planet?.gravedad}`}></DetailItem>
+            <DetailItem title={'Poblacion:'} info={`${planet?.poblacion}`}></DetailItem>
+            <DetailItem title={'Clima:'} info={`${planet?.clima}`}></DetailItem>
+            <DetailItem title={'Terreno:'} info={`${planet?.terreno}`}></DetailItem>
+            <DetailItem title={'Agua Superficial:'} info={`${planet?.aguaSuperficial}`}></DetailItem>
 
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Periodo Orbital:</Text>
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{planet?.periodoOrbital}</Text>
-            </View>
-            <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
-
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Gravedad:</Text>
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{planet?.gravedad}</Text>
-            </View>
-            <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
-
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Poblacion:</Text>
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{planet?.poblacion}</Text>
-            </View>
-            <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
-
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Clima:</Text>
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{planet?.clima}</Text>
-            </View>
-            <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
-
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Terreno:</Text>
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{planet?.terreno}</Text>
-            </View>
-            <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
-
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Agua Superficial:</Text>
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{planet?.aguaSuperficial}</Text>
-            </View>
-            <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Residentes:</Text>
-            </View>
-            <FlatList 
-                style={styles.flatList}
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}
-                data={residents}
-                contentContainerStyle={{gap: 10}}
-                renderItem={({ item }) => (
-                    <Pressable 
-                        style={({ pressed }) => ({
-                            opacity: pressed ? 0.5 : 1,
-                        })}
-                        onPress={()=>{
-                        router.push({pathname:'/peopleDetail', params:{ id: item.id}})
-                    }}>
-                    <Text key={item.id} style={[styles.flatListItem, { color: Colors[isDarkMode ? 'light' : 'dark'].text, backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background}]}>{item.title}</Text>
-                    </Pressable>
-                )}
-            ></FlatList>
-            <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
-                <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Peliculas:</Text>
-            </View>
-            <FlatList 
-                style={styles.flatList}
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}
-                data={films}
-                contentContainerStyle={{gap: 10}}
-                renderItem={({ item }) => (
-                    <Pressable 
-                        style={({ pressed }) => ({
-                            opacity: pressed ? 0.5 : 1,
-                        })}
-                        onPress={()=>{
-                        router.push({pathname:'/filmDetail', params:{ id: item.id}})
-                    }}>
-                            <Text key={item.id} style={[styles.flatListItem, { color: Colors[isDarkMode ? 'light' : 'dark'].text, backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background}]}>{item.title}</Text>
-                    </Pressable>
-                )}
-            >
-
-            </FlatList>
+            <DetailClickableList link={'/peopleDetail'} title={'Residentes:'} data={residents}></DetailClickableList>
+            <DetailClickableList link={'/filmDetail'} title={'Peliculas:'} data={films}></DetailClickableList>
+            
+           
         </SafeAreaView>
     </ScrollView>
   );
@@ -166,18 +95,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     overflow: 'visible'
   },
-  header: {
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    alignContent: 'flex-start',
-    alignItems: 'center'
-  },
-  title: {
-    fontSize: 32,
-    height: 40,
-    fontWeight: 'bold',
-    marginRight: 'auto'
-  },
+  
   image:{
     marginHorizontal: 20,
     aspectRatio: 1,
@@ -192,16 +110,5 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderRadius: 10
   },
-  text:{
-    fontSize: 16
-  },
-  flatList:{
-    paddingHorizontal: 20,
-    marginBottom: 10
-  },
-  flatListItem:{
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20
-  }
+
 });

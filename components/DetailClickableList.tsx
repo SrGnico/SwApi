@@ -10,8 +10,9 @@ const DetailClickableList = ({ data, title, link }: {  link: string,title: strin
     <View>
         <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
                     <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{title}</Text>
+                    <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{data.length === 0? 'n/a': ''}</Text>
                 </View>
-                <FlatList 
+                {data.length === 0? '':<FlatList 
                     style={styles.flatList}
                     showsHorizontalScrollIndicator={false}
                     horizontal={true}
@@ -25,9 +26,13 @@ const DetailClickableList = ({ data, title, link }: {  link: string,title: strin
                             onPress={()=>{
 
                                 switch (link){
-                                    case '/peopleDetail': router.push({pathname:'/peopleDetail', params:{ id: item.id}})
+                                    case '/peopleDetail': router.push({pathname:'/peopleDetail', params:{ id: item.id}}) 
+                                      break;
                                     case '/filmDetail': router.push({pathname:'/filmDetail', params:{ id: item.id}})
+                                      break;
                                     case '/peopleDetail': router.push({pathname:'/peopleDetail', params:{ id: item.id}})
+                                      break;
+
                                 }
 
                             }}>
@@ -36,7 +41,7 @@ const DetailClickableList = ({ data, title, link }: {  link: string,title: strin
                     )}
                 >
         
-        </FlatList>
+        </FlatList>}
     </View>
   );
 };

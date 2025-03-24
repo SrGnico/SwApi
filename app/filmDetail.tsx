@@ -6,12 +6,14 @@ import { FilmName, Pelicula } from '@/types/types';
 import { router, useLocalSearchParams } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, Dimensions, ScrollView, FlatList, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { filmImages } from '@/data/images/images';
 import DetailItem from '@/components/DetailItem';
 import DetailClickableList from '@/components/DetailClickableList'
+import DetailNotClickableList from '@/components/DetailNotClickableList';
+import DetailHeader from '@/components/DetailHeader';
 
 const FilmDetailScreen = () => {
   const { id } = useLocalSearchParams() as { id: string };
@@ -98,108 +100,28 @@ const FilmDetailScreen = () => {
 return (
 <ScrollView>
     <SafeAreaView style={[styles.container,{backgroundColor: Colors[isDarkMode ? 'dark' : 'light'].background }]}>
-        <View style={styles.header}>
-            <IconButton name={'chevron-back'} onPress={() => {
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
-                    router.back();
-            }}></IconButton>
-            <Text style={[styles.title, { color: Colors[isDarkMode ? 'dark' : 'light'].text }]}>{pelicula?.titulo}</Text>
-        </View>
+      
+        <DetailHeader title={`${pelicula?.titulo}`}></DetailHeader>
 
         <Image
           source={filmImages[pelicula?.titulo as FilmName]}
           style={[styles.image, { width: width, height: width }]}
         />
+        
+        <View style={[styles.itemView,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
+
+            <Text style={[styles.viewTitle, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Texto de Apertura:</Text>
+            <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{pelicula?.textoApertura}</Text>
+        </View>
 
         <DetailItem title="Episodio:" info={`${pelicula?.episodio}`}></DetailItem>
         <DetailItem title="Director:" info={`${pelicula?.director}`}></DetailItem>
         <DetailItem title="Fecha de Estreno:" info={`${pelicula?.fechaEstreno}`}></DetailItem>
         <DetailItem title="Productor:" info={`${pelicula?.productores}`}></DetailItem>
-       
-        <View style={[styles.itemTextoDeApertura,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
-
-            <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Texto de Apertura:</Text>
-            <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{pelicula?.textoApertura}</Text>
-        </View>
-      
-        <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
-          <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Naves Estelares:</Text>
-          <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{pelicula?.especies.length === 0? 'n/a': ''}</Text>
-        </View>
-        {pelicula?.especies.length === 0? '':<FlatList 
-
-            style={styles.flatList}
-            showsHorizontalScrollIndicator={false}
-            horizontal={true}
-            data={species}
-            contentContainerStyle={{gap: 10}}
-            renderItem={({ item }) => (
-                <Text key={item.title} style={[styles.flatListItem, { color: Colors[isDarkMode ? 'light' : 'dark'].text, backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background}]}>{item.title}</Text>
-            )}
-            >
-
-            </FlatList>}
-
-        <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
-          <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Naves Estelares:</Text>
-          <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{pelicula?.navesEstelares.length === 0? 'n/a': ''}</Text>
-        </View>
-        {pelicula?.navesEstelares.length === 0? '':<FlatList 
-
-            style={styles.flatList}
-            showsHorizontalScrollIndicator={false}
-            horizontal={true}
-            data={ships}
-            contentContainerStyle={{gap: 10}}
-            renderItem={({ item }) => (
-                <Text key={item.title} style={[styles.flatListItem, { color: Colors[isDarkMode ? 'light' : 'dark'].text, backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background}]}>{item.title}</Text>
-            )}
-            >
-
-            </FlatList>}
-      
-        <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
-          <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Vehiculos:</Text>
-          <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{pelicula?.vehiculos.length === 0? 'n/a': ''}</Text>
-        </View>
-          {pelicula?.vehiculos.length === 0? '':<FlatList 
-
-            style={styles.flatList}
-            showsHorizontalScrollIndicator={false}
-            horizontal={true}
-            data={vehicles}
-            contentContainerStyle={{gap: 10}}
-            renderItem={({ item }) => (
-                <Text key={item.title} style={[styles.flatListItem, { color: Colors[isDarkMode ? 'light' : 'dark'].text, backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background}]}>{item.title}</Text>
-            )}
-        >
-
-        </FlatList>}
-
-        <View style={[styles.item,{backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background }]}>
-            <Text style={[styles.text, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>Planetas:</Text>
-        </View>
-        <FlatList 
-            style={styles.flatList}
-            showsHorizontalScrollIndicator={false}
-            horizontal={true}
-            data={planets}
-            contentContainerStyle={{gap: 10}}
-            renderItem={({ item }) => (
-                <Pressable 
-                    style={({ pressed }) => ({
-                        opacity: pressed ? 0.5 : 1,
-                    })}
-                    onPress={()=>{
-                    router.push({pathname:'/planetDetail', params:{ id: item.id}})
-                }}>
-                        <Text key={item.id} style={[styles.flatListItem, { color: Colors[isDarkMode ? 'light' : 'dark'].text, backgroundColor: Colors[isDarkMode ? 'light' : 'dark'].background}]}>{item.title}</Text>
-                </Pressable>
-            )}
-        >
-
-        </FlatList>
-
+        <DetailNotClickableList title={'Especies:'} data={species || []}></DetailNotClickableList>
+        <DetailNotClickableList title={'Naves Estelares:'} data={ships || []}></DetailNotClickableList>
+        <DetailNotClickableList title={'Vehiculos:'} data={vehicles || []}></DetailNotClickableList>
+        <DetailClickableList link={'/planetDetail'} title={'Planetas:'} data={planets || []}></DetailClickableList>
         <DetailClickableList link={'/peopleDetail'} title={'Personajes:'} data={people || []}></DetailClickableList>
 
     </SafeAreaView>
@@ -216,50 +138,26 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     overflow: 'visible'
   },
-  header: {
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    alignContent: 'flex-start',
-    alignItems: 'center'
-  },
-  title: {
-    fontSize: 32,
-    height: 40,
-    fontWeight: 'bold',
-    marginRight: 'auto'
-  },
   image:{
     marginHorizontal: 20,
     aspectRatio: 1,
     objectFit: 'contain'
   },
-  item:{
+  itemView:{
     marginHorizontal: 20,
-    flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
     padding: 10,
     marginVertical: 10,
     borderRadius: 10
   },
-  itemTextoDeApertura:{
-    marginHorizontal: 20,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10,
-    marginVertical: 10,
-    borderRadius: 10
+  viewTitle:{
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center'
   },
   text:{
-    fontSize: 16
+    fontSize: 16,
+    textAlign: 'center'
   },
-  flatList:{
-    paddingHorizontal: 20,
-    marginBottom: 10
-  },
-  flatListItem:{
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20
-  }
 });
