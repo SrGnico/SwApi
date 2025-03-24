@@ -54,6 +54,9 @@ function RootLayoutNav() {
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="home" options={{ headerShown: false }} />
         <Stack.Screen name="list" options={{ headerShown: false }} />
+        <Stack.Screen name="peopleDetail" options={{ headerShown: false }} />
+        <Stack.Screen name="planetDetail" options={{ headerShown: false }} />
+        <Stack.Screen name="filmDetail" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );

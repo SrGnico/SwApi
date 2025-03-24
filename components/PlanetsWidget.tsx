@@ -7,7 +7,7 @@ import { View } from './Themed';
 import Colors from '@/constants/Colors';
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 
 const PlanetsWidget = () => {
@@ -22,6 +22,11 @@ const PlanetsWidget = () => {
 
     fetchPlanets();
   }, []);
+
+  const getIdFromUrl = (url: string) => {
+    const parts = url.split('/').filter(Boolean); 
+    return parts[parts.length - 1]; 
+  };
 
   return (
     <View style={[styles.container, {backgroundColor: Colors[isDarkMode ? 'dark' : 'light'].background }]}>
@@ -45,7 +50,7 @@ const PlanetsWidget = () => {
               })}
               onPress={()=>{
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
-                //Todo: Take to detail page
+                router.push({ pathname: '/planetDetail', params: { id: getIdFromUrl(item.url)} })
               }}>
             <Image
               source={planetImages[item.nombre as PlanetName] || require("../data/images/planets/default.png")}

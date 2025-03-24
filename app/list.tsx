@@ -73,6 +73,11 @@ const ListScreen = () => {
         }
     };
 
+    const getIdFromUrl = (url: string) => {
+        const parts = url.split('/').filter(Boolean); 
+        return parts[parts.length - 1]; 
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.row}>
@@ -123,7 +128,8 @@ const ListScreen = () => {
                         })}
                         onPress={() => {
                             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
-                            //Todo: Take to detail page
+                            if(category === 'Planetas')router.push({ pathname: '/planetDetail', params: { id: getIdFromUrl(item.url)} })
+                            if(category === 'Personas')router.push({ pathname: '/peopleDetail', params: { id: getIdFromUrl(item.url)} })
                         }}>
                         <Text style={[styles.nombre, { color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{item.nombre}</Text>
                     </Pressable>
