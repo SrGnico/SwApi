@@ -10,6 +10,11 @@ import { RootState } from "../redux/store";
 import { Link, router } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 
+export const getIdFromUrl = (url: string) => {
+  const parts = url.split('/').filter(Boolean); 
+  return parts[parts.length - 1]; 
+};
+
 const PlanetsWidget = () => {
   const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
   const [planets, setPlanets] = useState<Planeta[]>([]);
@@ -22,11 +27,6 @@ const PlanetsWidget = () => {
 
     fetchPlanets();
   }, []);
-
-  const getIdFromUrl = (url: string) => {
-    const parts = url.split('/').filter(Boolean); 
-    return parts[parts.length - 1]; 
-  };
 
   return (
     <View style={[styles.container, {backgroundColor: Colors[isDarkMode ? 'dark' : 'light'].background }]}>
@@ -55,6 +55,7 @@ const PlanetsWidget = () => {
             <Image
               source={planetImages[item.nombre as PlanetName] || require("../data/images/planets/default.png")}
               style={[styles.image, {backgroundColor: Colors[isDarkMode ? 'dark' : 'light'].background }]}
+              testID={`planet-image-${item.nombre}`}
             />
             <Text style={[styles.nombrePlaneta, {color: Colors[isDarkMode ? 'light' : 'dark'].text }]}>{item.nombre}</Text>
           </Pressable>

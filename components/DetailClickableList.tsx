@@ -30,7 +30,7 @@ const DetailClickableList = ({ data, title, link }: {  link: string,title: strin
                                       break;
                                     case '/filmDetail': router.push({pathname:'/filmDetail', params:{ id: item.id}})
                                       break;
-                                    case '/peopleDetail': router.push({pathname:'/peopleDetail', params:{ id: item.id}})
+                                    case '/planetDetail': router.push({pathname:'/planetDetail', params:{ id: item.id}})
                                       break;
 
                                 }
@@ -46,7 +46,7 @@ const DetailClickableList = ({ data, title, link }: {  link: string,title: strin
   );
 };
 
-export default DetailClickableList
+export default DetailClickableList;
 
 const styles = StyleSheet.create({
     item:{
